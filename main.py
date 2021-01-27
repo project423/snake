@@ -3,6 +3,7 @@ from snake import Snake
 from score_board import ScoreBoard
 from food import Food
 
+
 import time
 
 delay = 0.1
@@ -12,6 +13,9 @@ wn.title("Snake Game")
 wn.bgcolor("black")
 wn.setup(width=600, height=600)
 
+#Accesses the X on the GUI
+canvas = wn.getcanvas()
+root = canvas.winfo_toplevel()
 #Snake 
 snake = Snake()
 
@@ -20,6 +24,8 @@ food = Food()
 
 #Score Board
 scoreboard = ScoreBoard()
+
+
 
 #Turn off the screen updates
 wn.tracer(0)
@@ -38,8 +44,18 @@ def game_reset():
     scoreboard.reset()
     food.move()
 
+
+def on_close():
+    global game_is_on
+    game_is_on = False
+
+#Terminal does now throw a lot of erros when the x is clicked
+root.protocol("WM_DELETE_WINDOW", on_close)
+
+
 #Main game loop
-while True:
+game_is_on = True
+while game_is_on:
     wn.update()
 
     #Check for a collision with the border
@@ -67,4 +83,3 @@ while True:
             game_reset()
     time.sleep(delay)
 
-wn.mainloop()
